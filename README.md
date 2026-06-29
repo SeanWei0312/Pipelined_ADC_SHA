@@ -1,14 +1,14 @@
 # SC Sample-and-Hold Amplifier for 16-MS/s 7-Bit Pipelined ADC in 0.18 µm CMOS
 
-This project implements a fully differential switched-capacitor sample-and-hold amplifier (SHA) for the residue-amplification stage of a 1.5-bit/stage pipelined ADC in TSMC 0.18 um CMOS. The repository includes the Markdown project report, extracted figure assets, the final class submission PDF, and the project requirements PDF.
+This project implements a fully differential switched-capacitor sample-and-hold amplifier (SHA) for the residue-amplification stage of a 1.5-bit/stage pipelined ADC in TSMC 0.18 um CMOS. The repository includes the Markdown project report, extracted figure assets, the final class-submission PDF, and the project-requirements PDF.
 
 ## Project Summary
 
 This is the final project for ELEN E6312 Advanced Analog Integrated Circuits, Spring 2026.
 
-The SHA uses a fully differential switched-capacitor gain-of-2 architecture with four matched 200 fF capacitors. A two-stage Miller-compensated fully differential OTA provides the loop gain and settling speed required for 7-bit operation at a 16 MHz sampling frequency. The OTA uses a complementary NMOS/PMOS first stage, current recycling, PMOS second-stage output devices, and common-mode feedback.
+The SHA uses a fully differential switched-capacitor gain-of-2 architecture with four matched 200 fF capacitors. A two-stage, Miller-compensated, fully differential OTA provides the loop gain and settling speed required for 7-bit operation at a 16 MHz sampling frequency. The OTA uses a complementary NMOS/PMOS first stage, current recycling, PMOS second-stage output devices, and common-mode feedback.
 
-The design targets a 1.8 V supply, 0.9 V common-mode voltage, +/-300 mV differential full-scale input range, 7-bit accuracy, and a 31.25 ns half-clock settling window.
+The design targets a 1.8 V supply, 0.9 V common-mode voltage, +/-300 mV single-ended input swing on each side, +/-600 mV peak differential full-scale input range, 7-bit settling, and a 31.25 ns half-clock settling window.
 
 ## Contributors
 
@@ -26,16 +26,17 @@ Yi-Hsiang Wei, Chun-Chi Lu, and Zijian Shang are students in Columbia University
 | Sampling frequency | 16 MHz |
 | Supply voltage | 1.8 V |
 | Common-mode voltage | 0.9 V |
-| Full-scale differential input | +/-300 mV |
+| Single-ended input swing | +/-300 mV around common-mode |
+| Full-scale differential input | +/-600 mV peak |
 | Sampling / feedback capacitors | 200 fF |
 | Measured closed-loop gain | 1.9945 V/V |
 | Closed-loop gain error | 0.28% |
 | OTA DC gain | 81.44 dB |
 | OTA unity-gain bandwidth | 63.78 MHz |
-| Phase margin at `beta = 0.5` | 51.1 degrees |
+| SC operating phase margin (`beta = 0.5`) | 51.1 degrees |
 | SC amplifier slew rate | 261 V/us |
-| Maximum gain error | 5.67 mV |
-| Noise margin | 44x |
+| Voltage-domain gain-error sweep | 5.67 mV largest observed |
+| Noise margin | 177x |
 | Total transient average power | 438.5 uW |
 | Walden FOM | 214 fJ/step |
 

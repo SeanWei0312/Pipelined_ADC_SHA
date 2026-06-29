@@ -8,7 +8,7 @@ ELEN E6312 Advanced Analog Integrated Circuits, Spring 2026
 
 A fully differential switched-capacitor (SC) sample-and-hold amplifier (SHA) with a nominal gain of 2 is designed for the residue-amplification stage of a 1.5-bit/stage pipelined analog-to-digital converter (ADC). The design targets `fs = 16 MHz` and `N = 7 bits` resolution under a 1.8 V supply in the TSMC 180 nm CMOS process. The operational transconductance amplifier (OTA) employs a two-stage Miller-compensated topology with a complementary NMOS/PMOS first stage.
 
-The OTA achieves a DC gain of 81.44 dB, a unity-gain bandwidth of 63.78 MHz, and a phase margin of 51.1 degrees at the feedback factor `beta = 0.5` of the SC circuit. Four matched 200 fF capacitors implement the gain-of-2 charge-redistribution function with a 44x margin against the `kT/C` noise budget. A slew rate of 261 V/us is extracted from large-signal step-response simulation. The measured closed-loop gain is 1.9945 V/V (0.28% error), and the peak gain error over the full input range is 5.67 mV (1.2 VLSB), indicating near-7-bit linearity. Total power consumption is 438.5 uW, yielding a Walden FOM of 214 fJ/step.
+The OTA achieves a DC gain of 81.44 dB, a unity-gain bandwidth of 63.78 MHz, and a phase margin of 51.1 degrees at the feedback factor `beta = 0.5` of the SC circuit. Four matched 200 fF capacitors implement the gain-of-2 charge-redistribution function with a large margin against the `kT/C` noise budget. A slew rate of 261 V/us is extracted from large-signal step-response simulation. The measured closed-loop gain is 1.9945 V/V (0.28% error). Total power consumption is 438.5 uW, yielding a Walden FOM of 214 fJ/step.
 
 ## I. Introduction
 
@@ -28,10 +28,10 @@ This paper presents the complete transistor-level design of a fully differential
 
 ### A. Parameter Selection
 
-The selected design parameters are summarized in Table I. A sampling frequency of `fs = 16 MHz` was chosen as the target speed, and a 7-bit ADC resolution was selected to establish a moderate noise budget while challenging the settling requirement. The full-scale peak differential amplitude is `VFS = +/-300 mV` under a 1.8 V supply, keeping adequate headroom for the OTA output transistors. The input and output common-mode voltage is `VCM = 0.9 V`. The LSB voltage is
+The selected design parameters are summarized in Table I. A sampling frequency of `fs = 16 MHz` was chosen as the target speed, and a 7-bit ADC resolution was selected to establish a moderate noise budget while challenging the settling requirement. Each input terminal swings `+/-300 mV` around the common-mode voltage, giving a peak differential input amplitude of `VFS,diff = +/-600 mV`. The input and output common-mode voltage is `VCM = 0.9 V`. The LSB voltage is therefore based on the differential input span:
 
 ```text
-VLSB = 2VFS / 2^N = 600 mV / 2^7 = 4.6875 mV.                 (2)
+VLSB = 2VFS,diff / 2^N = 1.2 V / 2^7 = 9.375 mV.              (2)
 ```
 
 **Table I. System Design Parameters**
@@ -43,8 +43,9 @@ VLSB = 2VFS / 2^N = 600 mV / 2^7 = 4.6875 mV.                 (2)
 | OTA bias `Vb` | 0.6 V |
 | Sampling frequency `fs` | 16 MHz |
 | ADC resolution `N` | 7 bits |
-| Full-scale `VFS` | +/-300 mV peak differential |
-| `VLSB` | 4.6875 mV |
+| Single-ended input swing | +/-300 mV around `VCM` |
+| Full-scale differential input `VFS,diff` | +/-600 mV peak |
+| `VLSB` | 9.375 mV |
 | Feedback factor `beta` | 0.50 |
 | Process / corner | TSMC 180 nm / tt |
 | Temperature | 300 K (27 degrees C) |
@@ -67,11 +68,11 @@ where the factor of 24 combines the fully differential noise addition and the un
 
 ```text
 Cs,min = 24kT / VLSB^2
-       = 24 * 1.381e-23 * 300 / (4.6875e-3)^2
-       ~= 4.5 fF.                                               (5)
+       = 24 * 1.381e-23 * 300 / (9.375e-3)^2
+       ~= 1.1 fF.                                               (5)
 ```
 
-A value of `Cs = 200 fF` was chosen, giving a calculated noise of `sqrt(kT/Cs) = 144 uVrms` and a 44x variance margin over the budget (`kT/C = 2.07e-8 V^2` vs. budget `9.15e-7 V^2`). This margin protects against OTA input-referred noise and process variation.
+A value of `Cs = 200 fF` was chosen, giving a calculated noise of `sqrt(kT/Cs) = 144 uVrms` and a 177x variance margin over the budget (`kT/C = 2.07e-8 V^2` vs. budget `3.66e-6 V^2`). This margin protects against OTA input-referred noise and process variation.
 
 ### C. SC Gain Analysis
 
@@ -194,7 +195,7 @@ A non-overlapping two-phase clock is generated externally. The sampling clock `p
 
 ### B. OTA Differential Frequency Response
 
-Fig. 4 shows the simulated differential open-loop gain and phase of the OTA. The DC gain is `A0 = 81.44 dB` (about 11,800 V/V), the unity-gain bandwidth is `GBW = 63.78 MHz`, and the phase margin at GBW is 27.4 degrees for a unity-feedback configuration. For the SC circuit with `beta = 0.5`, the relevant gain crossover occurs at `f6dB = 36.52 MHz`, where the phase margin is 51.1 degrees, adequate for well-damped settling.
+Fig. 4 shows the simulated differential open-loop gain and phase of the OTA. The DC gain is `A0 = 81.44 dB` (about 11,800 V/V), and the unity-gain bandwidth is `GBW = 63.78 MHz`. A unity-feedback diagnostic gives a phase margin of 27.4 degrees at GBW. For the SC circuit with `beta = 0.5`, the relevant gain crossover occurs at `f6dB = 36.52 MHz`, where the operating phase margin is 51.1 degrees.
 
 The closed-loop time constant at `beta = 0.5` is
 
@@ -204,7 +205,7 @@ tau_cl = 1 / (2 pi f_-3dB)
        ~= 5.0 ns.                                               (11)
 ```
 
-Seven-bit linear settling requires `N ln(2) * tau_cl = 24.3 ns`. Adding a slew time of approximately 2.5 ns for a full-scale step, the total settling demand of approximately 26.8 ns fits within the 31.25 ns half-period with a 14% margin.
+Seven-bit linear settling requires `N ln(2) * tau_cl = 24.3 ns`, which fits within the 31.25 ns half-period before accounting for large-signal slewing. The simulated transient and step responses below are therefore used to check the large-signal behavior directly.
 
 <div align="center">
 <img src="figures/fig04-ota-frequency-response.png" alt="Fig. 4. OTA differential open-loop frequency response." width="700"><br>
@@ -213,16 +214,16 @@ Seven-bit linear settling requires `N ln(2) * tau_cl = 24.3 ns`. Adding a slew t
 
 ### C. SC Amplifier Transient
 
-Fig. 5 shows the simulated differential input and output waveforms for a 1 MHz, +/-300 mV differential sine input. The hold phases show the output settling to 2x the sampled input. The measured closed-loop gain from the first complete hold phase is 1.9945 V/V, corresponding to a gain error of 0.28%. This gain error is consistent with the finite DC gain, with the measured value also including finite settling time within the hold window.
+Fig. 5 shows the simulated differential input and output waveforms for a 1 MHz sine input. Each input terminal swings `+/-300 mV` around `VCM`, so the differential input is `Vin,diff = +/-600 mV`. The hold phases show the output settling to 2x the sampled differential input. The measured closed-loop gain from the first complete hold phase is 1.9945 V/V, corresponding to a gain error of 0.28%. This gain error is consistent with the finite DC gain, with the measured value also including finite settling time within the hold window.
 
 <div align="center">
 <img src="figures/fig05-sc-sha-transient.png" alt="Fig. 5. SC SHA transient response." width="700"><br>
-<em>Fig. 5. Simulated differential transient of the SC SHA for a 1 MHz, +/-300 mV differential sine input. The average closed-loop gain across settled hold phases is 1.9945 V/V.</em>
+<em>Fig. 5. Simulated differential transient of the SC SHA for a 1 MHz sine input. Each input side swings +/-300 mV, producing Vin,diff = +/-600 mV. The average closed-loop gain across settled hold phases is 1.9945 V/V.</em>
 </div>
 
 ### D. SC Amplifier Step Response
 
-Fig. 6 shows the simulated differential output for small- and large-signal step inputs. For the small-signal case (`+/-1 VLSB ~= +/-4.69 mV`), the output settles exponentially within the first hold phase with no visible slewing. For the large-signal case, corresponding to a full-scale transition from `-VFS` to `+VFS` (a 600 mV differential step), the output slews during the first half of the hold phase before entering exponential settling. The slew rate is extracted by a windowed finite difference across the Cadence adaptive time-step data:
+Fig. 6 shows the simulated differential output for small- and large-signal step inputs. For the small-signal case (`+/-1 VLSB ~= +/-9.38 mV`), the output settles exponentially within the first hold phase with no visible slewing. For the large-signal case, corresponding to `Vin,diff = +/-600 mV`, the output slews during the first half of the hold phase before entering exponential settling. The slew rate is extracted by a windowed finite difference across the Cadence adaptive time-step data:
 
 ```text
 SR = max |dVout / dt| = 261 V/us.                              (12)
@@ -235,41 +236,39 @@ This value is consistent with the theoretical estimate `SR ~= Itail/CL ~= 104 uA
 <em>Fig. 6. Simulated differential step response of the SC SHA. Top: small-signal step. Bottom: large-signal step. The extracted slew rate is 261 V/us.</em>
 </div>
 
-### E. Gain Linearity
+### E. Voltage-Domain Gain Error
 
-Fig. 7 characterizes the input-output linearity of the SC amplifier over the full `+/-300 mV` peak differential input range using a 100 kHz differential sine stimulus. The output voltage at 90% of each hold phase is measured using clock-synchronous decimation and compared to the ideal gain-of-2 response. The maximum absolute error over the valid input range is 5.67 mV, approximately 1.2 VLSB. This is close to the 7-bit error scale, although it is above a strict 1/2-LSB peak-error criterion.
-
-The gain-error curve exhibits a narrow double-valued band rather than a single-valued curve: for the same input amplitude, the rising and falling edges of the sine stimulus produce slightly different error. This is a settling-induced memory effect. Because the OTA settles with closed-loop time constant `tau_cl = 5.0 ns`, the output measured at 90% of the 28 ns hold window retains a residual from the previous hold phase:
+Fig. 7 characterizes the voltage-domain input-output gain error of the SC amplifier over the simulated full input sweep using a 100 kHz differential sine stimulus. The output voltage at 90% of each hold phase is measured using clock-synchronous decimation and compared to the ideal gain-of-2 response. The bottom panel plots
 
 ```text
-epsilon_k ~= 2(Vin,k-1 - Vin,k) * exp(-tmeas / tau_cl),         (13)
+epsilon = Vout - 2Vin.                                         (13)
 ```
 
-where `exp(-25.2 ns / 5.0 ns) ~= 0.65%`. For a 100 kHz sine sampled at 16 MHz, the maximum inter-sample step is approximately 23.6 mV, giving a staircase band half-width of about 0.31 mV, well below the dominant OTA-nonlinearity error and negligible at 7-bit resolution.
+The largest observed voltage-domain error over the valid input range is 5.67 mV. The double-valued band in the gain-error curve comes from settling memory: for the same input amplitude, the rising and falling edges of the sine stimulus retain slightly different residual error from the previous hold phase.
 
 <div align="center">
-<img src="figures/fig07-gain-linearity.png" alt="Fig. 7. Gain linearity characterization." width="700"><br>
-<em>Fig. 7. Gain linearity characterization of the SC SHA over the full input range. Top: differential input, output, and ideal 2x reference. Bottom: gain error versus input voltage; max error is 5.67 mV, approximately 1.2 LSB.</em>
+<img src="figures/fig07-gain-linearity.png" alt="Fig. 7. Voltage-domain gain-error characterization." width="700"><br>
+<em>Fig. 7. Voltage-domain gain-error characterization of the SC SHA. Top: differential input, output, and ideal 2x reference. Bottom: gain error versus input voltage; largest observed voltage error is 5.67 mV.</em>
 </div>
 
 ### F. OTA Common-Mode Frequency Response
 
-Fig. 8 shows the simulated common-mode-to-differential gain of the OTA under a fully in-phase AC stimulus applied to both input terminals simultaneously. Across the full sweep from 1 kHz to 1 GHz the measured gain remains below -240 dB, limited by the Spectre double-precision noise floor. The implied CMRR is approximately `81.44 - (-244) = 325 dB` in the ideal symmetric testbench; practical mismatch and layout parasitics would set the measured silicon CMRR.
+Fig. 8 shows the simulated common-mode-to-differential gain of the OTA under a fully in-phase AC stimulus applied to both input terminals simultaneously. Across the full sweep from 1 kHz to 1 GHz the measured gain remains below -240 dB, limited by the Spectre double-precision noise floor. In this ideal symmetric testbench, the simulation-floor-limited implied CMRR is approximately `81.44 - (-244) = 325 dB`; practical mismatch and layout parasitics would set the measured silicon CMRR.
 
 <div align="center">
 <img src="figures/fig08-ota-common-mode-response.png" alt="Fig. 8. OTA common-mode frequency response." width="700"><br>
-<em>Fig. 8. OTA common-mode frequency response. Top: simulated common-mode-to-differential gain versus frequency. Bottom: implied CMRR, averaging approximately 325 dB.</em>
+<em>Fig. 8. OTA common-mode frequency response. Top: simulated common-mode-to-differential gain versus frequency. Bottom: simulation-floor-limited implied CMRR.</em>
 </div>
 
 ### G. OTA Differential Step Response
 
-Fig. 9 characterizes the OTA step response with a 200 fF capacitive load in unity-feedback configuration. For a small-signal input step of `VLSB = 4.69 mV`, the output settles exponentially with a time constant consistent with `tau = 1/(2 pi GBW) = 2.5 ns`, with no visible slewing. For a large-signal step of `VFS = 300 mV`, slewing is evident at the onset; the peak rate-of-change is extracted from the Cadence adaptive time-step data:
+Fig. 9 characterizes the OTA step response with a 200 fF capacitive load in unity-feedback configuration. For a small-signal input step of `VLSB = 9.38 mV`, the output settles exponentially with a time constant consistent with `tau = 1/(2 pi GBW) = 2.5 ns`, with no visible slewing. For a large-signal step corresponding to the selected full-scale test condition, slewing is evident at the onset; the peak rate-of-change is extracted from the Cadence adaptive time-step data:
 
 ```text
 SR_OTA = max |dVout,diff / dt|.                                (14)
 ```
 
-The underdamped overshoot visible in the large-signal case is consistent with the 51.1 degree phase margin at `beta = 0.5`.
+This unity-feedback waveform is included as a diagnostic stress case; the SC amplifier operates at `beta = 0.5`, where the simulated phase margin is 51.1 degrees.
 
 <div align="center">
 <img src="figures/fig09-ota-step-response.png" alt="Fig. 9. OTA differential step response." width="700"><br>
@@ -281,10 +280,10 @@ The underdamped overshoot visible in the large-signal case is consistent with th
 Table V summarizes the simulated performance metrics. The figure of merit normalizes power by speed and accuracy:
 
 ```text
-FOM = P / (2^ENOB * fs),                                       (15)
+FOM = P / (2^N * fs),                                          (15)
 ```
 
-where `ENOB = N = 7` is used for a conservative estimate. The DC quiescent power extracted from the Cadence operating-point simulation is 415.4 uW. Averaged over a 1 us transient (16 clock cycles of the 16 MHz SC operation), the total power including dynamic capacitor-switching contributions rises to 438.5 uW. Using this value,
+where `N = 7` is used as the design-resolution target. The DC quiescent power extracted from the Cadence operating-point simulation is 415.4 uW. Averaged over a 1 us transient (16 clock cycles of the 16 MHz SC operation), the total power including dynamic capacitor-switching contributions rises to 438.5 uW. Using this value,
 
 ```text
 FOM = 438.5 uW / (2^7 * 16 MHz)
@@ -298,7 +297,7 @@ FOM = 438.5 uW / (2^7 * 16 MHz)
 - The current-recycling M0/M2 tail pair further boosts `Gm1` without additional bias current paths.
 - Second-stage transistors are sized only large enough to satisfy the phase-margin non-dominant-pole condition, avoiding excess quiescent current.
 - The CMFB tail M8 (`m = 4`) is kept small to limit CMFB power.
-- The 200 fF sampling capacitors are 44x above the strict noise floor; downscaling to 100 fF would reduce capacitor area and switch settling time with a 22x noise margin remaining.
+- The 200 fF sampling capacitors are 177x above the strict noise floor; downscaling to 100 fF would reduce capacitor area and switch settling time with an 88x noise margin remaining.
 
 **Table V. Simulated Performance Summary**
 
@@ -312,24 +311,24 @@ FOM = 438.5 uW / (2^7 * 16 MHz)
 | Measured closed-loop gain | 1.9945 V/V (0.28% error) |
 | OTA DC gain `A0` | 81.44 dB |
 | OTA GBW | 63.78 MHz |
-| Phase margin (`beta = 1`) | 27.4 degrees |
-| Phase margin (`beta = 0.5`, SC) | 51.1 degrees |
+| Phase margin (`beta = 1`, diagnostic) | 27.4 degrees |
+| Phase margin (`beta = 0.5`, SC operating point) | 51.1 degrees |
 | Closed-loop -3 dB bandwidth | 31.9 MHz |
 | Closed-loop time constant `tau_cl` | 5.0 ns |
 | Slew rate `SR+` | 261 V/us |
 | Slew rate `SR-` | 261 V/us |
-| Max gain error `|epsilon|max` | 5.67 mV (1.2 VLSB) |
+| Voltage-domain gain-error sweep | 5.67 mV largest observed |
 | Sampling capacitor `Cs = Cf` | 200 fF |
 | `kT/C` noise `Vn,rms` | 143.9 uV |
-| Noise budget `VLSB^2/24` | 9.15e-7 V^2 |
-| Noise margin | 44x |
+| Noise budget `VLSB^2/24` | 3.66e-6 V^2 |
+| Noise margin | 177x |
 | DC quiescent power | 415.4 uW |
 | Total power (transient average) | 438.5 uW |
 | FOM `P/(2^N fs)` | 214 fJ/step |
 
 ## VI. Conclusion
 
-A fully differential SC SHA with a gain of 2 has been designed in TSMC 180 nm CMOS for a 7-bit, 16 MHz pipelined ADC. The two-stage Miller-compensated OTA with complementary first stage delivers a DC gain of 81.44 dB, a GBW of 63.78 MHz, and a phase margin of 51.1 degrees at the operating feedback factor `beta = 0.5`. Four 200 fF capacitors implement the gain-of-2 function with a 44x noise margin. The measured closed-loop gain of 1.9945 V/V, slew rate of 261 V/us, and peak gain error of 5.67 mV confirm correct circuit operation and near-7-bit linearity. The 26.8 ns estimated settling demand fits within the 31.25 ns half-period with a 14% margin. Total power consumption is 438.5 uW, yielding a Walden FOM of 214 fJ/step.
+A fully differential SC SHA with a gain of 2 has been designed in TSMC 180 nm CMOS for a 7-bit, 16 MHz pipelined ADC. The two-stage Miller-compensated OTA with complementary first stage delivers a DC gain of 81.44 dB, a GBW of 63.78 MHz, and a phase margin of 51.1 degrees at the operating feedback factor `beta = 0.5`. Four 200 fF capacitors implement the gain-of-2 function with a large noise margin. The measured closed-loop gain of 1.9945 V/V and slew rate of 261 V/us confirm correct circuit operation. Total power consumption is 438.5 uW, yielding a Walden FOM of 214 fJ/step.
 
 ## References
 
