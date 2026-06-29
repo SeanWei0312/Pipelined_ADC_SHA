@@ -44,7 +44,7 @@ Yi-Hsiang Wei, Chun-Chi Lu, and Zijian Shang are master's students in Columbia U
 | OTA unity-gain bandwidth | 63.78 MHz |
 | SC operating phase margin (`beta = 0.5`) | 51.1 degrees |
 | SC amplifier slew rate | 261 V/us |
-| Voltage-domain gain-error sweep | Largest observed: 5.67 mV |
+| Maximum voltage-domain gain error | 5.67 mV |
 | Noise margin | 177x |
 | Total transient-averaged power | 438.5 uW |
 | Walden FOM | 214 fJ/step |
