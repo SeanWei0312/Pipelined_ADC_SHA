@@ -28,10 +28,12 @@ This paper presents the complete transistor-level design of a fully differential
 
 ### A. Parameter Selection
 
-The selected design parameters are summarized in Table I. A sampling frequency of `fs = 16 MHz` was chosen as the target speed, and a 7-bit ADC resolution was selected to establish a moderate noise budget while challenging the settling requirement. Each input terminal swings `+/-300 mV` around the common-mode voltage, giving a peak differential input amplitude of `VFS,diff = +/-600 mV`. The input and output common-mode voltage is `VCM = 0.9 V`. The LSB voltage is therefore based on the differential input span:
+The selected design parameters are summarized in Table I. A sampling frequency of `fs = 16 MHz` was chosen as the target speed, and a 7-bit ADC resolution was selected to establish a moderate noise budget while challenging the settling requirement. Each input terminal swings `+/-300 mV` around the common-mode voltage, giving a differential input range of `Vin,diff = +/-600 mV`. The input and output common-mode voltage is `VCM = 0.9 V`. The LSB voltage is therefore based on the 1.2 V differential input span:
 
 ```text
-VLSB = 2VFS,diff / 2^N = 1.2 V / 2^7 = 9.375 mV.              (2)
+VLSB = (600 mV - (-600 mV)) / 2^N
+     = 1.2 V / 2^7
+     = 9.375 mV.                                               (2)
 ```
 
 **Table I. System Design Parameters**
@@ -44,7 +46,7 @@ VLSB = 2VFS,diff / 2^N = 1.2 V / 2^7 = 9.375 mV.              (2)
 | Sampling frequency `fs` | 16 MHz |
 | ADC resolution `N` | 7 bits |
 | Single-ended input swing | +/-300 mV around `VCM` |
-| Full-scale differential input `VFS,diff` | +/-600 mV peak |
+| Full-scale differential input `Vin,diff` | +/-600 mV peak |
 | `VLSB` | 9.375 mV |
 | Feedback factor `beta` | 0.50 |
 | Process / corner | TSMC 180 nm / tt |
