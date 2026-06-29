@@ -52,19 +52,19 @@ Yi-Hsiang Wei, Chun-Chi Lu, and Zijian Shang are master's students in Columbia U
 
 ## Files
 
-- [ADC_Project_Report.md](ADC_Project_Report.md) - complete Markdown report.
-- [ELEN6312_Submission/docs/elen6312_submission.pdf](ELEN6312_Submission/docs/elen6312_submission.pdf) - class submission report.
+- [ADC_Project_Report.md](ADC_Project_Report.md) - corrected Markdown report prepared after the class-graded submission.
+- [ELEN6312_Submission/docs/elen6312_submission.pdf](ELEN6312_Submission/docs/elen6312_submission.pdf) - class-submitted report from May 2026.
 - [ELEN6312_Submission/docs/project_requirements.pdf](ELEN6312_Submission/docs/project_requirements.pdf) - course project requirements.
 - `figures/` - image assets referenced by `ADC_Project_Report.md`.
 
 ## Repository Layout
 
 ```text
-ADC_Project_Report.md      Complete Markdown project report
+ADC_Project_Report.md      Corrected Markdown report prepared after class grading
 figures/                   Report figures extracted from the submission PDF
 ELEN6312_Submission/
   docs/
-    elen6312_submission.pdf    Final class submission report
+    elen6312_submission.pdf    Class-submitted report from May 2026
     project_requirements.pdf   Course project requirements
 ```
 
@@ -88,4 +88,4 @@ figures/fig09-ota-step-response.png
 
 Open [ADC_Project_Report.md](ADC_Project_Report.md) directly on GitHub or in a Markdown previewer. The figure paths are relative, so the images render as long as the `figures/` directory stays beside the report.
 
-The original PDF submission is preserved in `ELEN6312_Submission/docs/` for comparison with the Markdown version.
+The original May 2026 class-submitted PDF is preserved in `ELEN6312_Submission/docs/` for comparison with the corrected Markdown report.
