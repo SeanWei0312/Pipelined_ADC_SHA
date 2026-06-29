@@ -52,7 +52,7 @@ Yi-Hsiang Wei, Chun-Chi Lu, and Zijian Shang are master's students in Columbia U
 
 ## Files
 
-- [ADC_Project_Report.md](ADC_Project_Report.md) - corrected Markdown report prepared after the class-graded submission.
+- [ADC_Project_Report.md](ADC_Project_Report.md) - corrected Markdown report prepared after submission.
 - [ELEN6312_Submission/docs/elen6312_submission.pdf](ELEN6312_Submission/docs/elen6312_submission.pdf) - class-submitted report from May 2026.
 - [ELEN6312_Submission/docs/project_requirements.pdf](ELEN6312_Submission/docs/project_requirements.pdf) - course project requirements.
 - `figures/` - image assets referenced by `ADC_Project_Report.md`.
@@ -60,7 +60,7 @@ Yi-Hsiang Wei, Chun-Chi Lu, and Zijian Shang are master's students in Columbia U
 ## Repository Layout
 
 ```text
-ADC_Project_Report.md      Corrected Markdown report prepared after class grading
+ADC_Project_Report.md      Corrected Markdown report prepared after submission
 figures/                   Report figures extracted from the submission PDF
 ELEN6312_Submission/
   docs/
