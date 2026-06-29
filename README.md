@@ -8,14 +8,14 @@ This is the final project for ELEN E6312 Advanced Analog Integrated Circuits, Sp
 
 The SHA uses a fully differential switched-capacitor gain-of-2 architecture with four matched 200 fF capacitors. A two-stage, Miller-compensated, fully differential OTA provides the loop gain and settling speed required for 7-bit operation at a 16 MHz sampling frequency. The OTA uses a complementary NMOS/PMOS first stage, current recycling, PMOS second-stage output devices, and common-mode feedback.
 
-The design targets a 1.8 V supply, 0.9 V common-mode voltage, +/-300 mV single-ended input swing on each input, +/-600 mV peak differential full-scale input range, 7-bit settling, and a 31.25 ns half-clock settling window.
+The design targets a 1.8 V supply, 0.9 V common-mode voltage, +/-300 mV single-ended input swing at each input, +/-600 mV peak differential full-scale input range, 7-bit settling, and a 31.25 ns half-clock settling window.
 
 ## Contributors
 
-Yi-Hsiang Wei, Chun-Chi Lu, and Zijian Shang are students in Columbia University's Department of Electrical Engineering.
+Yi-Hsiang Wei, Chun-Chi Lu, and Zijian Shang are master's students in Columbia University's Department of Electrical Engineering.
 
 - Yi-Hsiang Wei:
-  - System-level switched-capacitor SHA design.
+  - System-level switched-capacitor sample-and-hold amplifier design.
   - Transistor-level OTA design.
   - Simulation analysis and verification.
 - Chun-Chi Lu:
@@ -35,7 +35,7 @@ Yi-Hsiang Wei, Chun-Chi Lu, and Zijian Shang are students in Columbia University
 | Sampling frequency | 16 MHz |
 | Supply voltage | 1.8 V |
 | Common-mode voltage | 0.9 V |
-| Single-ended input swing | +/-300 mV around the common mode |
+| Single-ended input swing | +/-300 mV around the common-mode voltage |
 | Full-scale differential input | +/-600 mV peak |
 | Sampling/feedback capacitors | 200 fF |
 | Measured closed-loop gain | 1.9945 V/V |
