@@ -37,6 +37,7 @@ Yi-Hsiang Wei, Chun-Chi Lu, and Zijian Shang are master's students in Columbia U
 | Common-mode voltage | 0.9 V |
 | Single-ended input swing | +/-300 mV |
 | Full-scale differential input | +/-600 mV peak |
+| Residue amplifier gain | 2 V/V |
 | Sampling/feedback capacitors | 200 fF |
 | Measured closed-loop gain | 1.9945 V/V |
 | Closed-loop gain error | 0.28% |
