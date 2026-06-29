@@ -57,6 +57,10 @@ Yi-Hsiang Wei, Chun-Chi Lu, and Zijian Shang are master's students in Columbia U
 - [ELEN6312_Submission/docs/project_requirements.pdf](ELEN6312_Submission/docs/project_requirements.pdf) - course project requirements.
 - `figures/` - image assets referenced by `ADC_Project_Report.md`.
 
+## Correction Note
+
+The main correction in `ADC_Project_Report.md` is the full-scale input interpretation. In the submitted PDF, `VFS` was miscalculated by treating the `+/-300 mV` single-ended input swing as the differential full-scale value. The corrected report uses `+/-600 mV` peak differential input, so `VLSB` and dependent metrics such as the noise budget and noise margin were updated accordingly.
+
 ## Repository Layout
 
 ```text
