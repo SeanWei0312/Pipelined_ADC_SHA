@@ -35,7 +35,7 @@ Yi-Hsiang Wei, Chun-Chi Lu, and Zijian Shang are master's students in Columbia U
 | Sampling frequency | 16 MHz |
 | Supply voltage | 1.8 V |
 | Common-mode voltage | 0.9 V |
-| Single-ended input swing | +/-300 mV around the common-mode voltage |
+| Single-ended input swing | +/-300 mV |
 | Full-scale differential input | +/-600 mV peak |
 | Sampling/feedback capacitors | 200 fF |
 | Measured closed-loop gain | 1.9945 V/V |
