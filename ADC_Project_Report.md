@@ -2,7 +2,7 @@
 
 Yi-Hsiang Wei, Chun-Chi Lu, and Zijian Shang  
 Department of Electrical Engineering, Columbia University  
-ELEN 6312 Advanced Analog Integrated Circuits, Spring 2026
+ELEN E6312 Advanced Analog Integrated Circuits, Spring 2026
 
 ## Abstract
 
